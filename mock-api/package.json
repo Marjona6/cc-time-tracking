@@ -1,0 +1,15 @@
+{
+  "name": "mock-api",
+  "version": "1.0.0",
+  "description": "JSON mock API for time tracking app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "json-server -p 3001 --watch src/db.json"
+  },
+  "author": "Meryem Yanar",
+  "dependencies": {
+    "json-server": "^0.17.0"
+  },
+  "license": "ISC"
+}
