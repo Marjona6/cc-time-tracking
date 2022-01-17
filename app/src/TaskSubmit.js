@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 
 import { API_URL } from "./constants";
 
-const TaskSubmit = (props) => {
+const TaskSubmit = ({ userId = "0001", ...props }) => {
   const { id: taskId } = useParams();
   const [task, setTask] = useState(null);
   const [errors, setErrors] = useState(null);
@@ -19,6 +19,58 @@ const TaskSubmit = (props) => {
       if (result.answer) setAnswer(result.answer);
     })();
   }, [taskId]);
+
+  const onBeginSession = useCallback(
+    (event) => {
+      (async () => {
+        const response1 = await fetch(`${API_URL}/tasks/${taskId}`);
+        const currentTask = await response1.json();
+        const updatedSessions = currentTask.sessions || {};
+        updatedSessions[userId] = updatedSessions[userId] || [];
+        updatedSessions[userId] = [...updatedSessions[userId], { begin: new Date().getTime() }];
+
+        const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+          method: "put",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...currentTask, sessions: updatedSessions }),
+        });
+        const result = await response.json();
+
+        if (result) {
+          setTask(result);
+        } else {
+          setErrors(JSON.stringify(result)); // TODO
+        }
+      })();
+    },
+    [taskId, userId]
+  );
+
+  const onEndSession = useCallback(
+    (event) => {
+      (async () => {
+        const response1 = await fetch(`${API_URL}/tasks/${taskId}`);
+        const currentTask = await response1.json();
+        const updatedSessions = currentTask.sessions || {};
+        updatedSessions[userId] = updatedSessions[userId] || [];
+        updatedSessions[userId][updatedSessions[userId].length - 1] = { ...updatedSessions[userId][updatedSessions[userId].length - 1], end: new Date().getTime() };
+
+        const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+          method: "put",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...currentTask, sessions: updatedSessions }),
+        });
+        const result = await response.json();
+
+        if (result) {
+          setTask(result);
+        } else {
+          setErrors(JSON.stringify(result)); // TODO
+        }
+      })();
+    },
+    [taskId, userId]
+  );
 
   const onChangeAnswer = useCallback((event) => setAnswer(event.target.value), []);
 
@@ -54,7 +106,7 @@ const TaskSubmit = (props) => {
         const response = await fetch(`${API_URL}/tasks/${taskId}`, {
           method: "put",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...task, submitted: false, answer }),
+          body: JSON.stringify({ ...task, submitted: false, answer }), // TODO end current session
         });
         const result = await response.json();
 
@@ -69,6 +121,28 @@ const TaskSubmit = (props) => {
     },
     [taskId, answer, task]
   );
+
+  const onWindowFocus = () => {
+    onBeginSession();
+  };
+
+  const onWindowBlur = () => {
+    onEndSession();
+  };
+
+  useEffect(() => {
+    onWindowFocus();
+
+    window.addEventListener("focus", onWindowFocus);
+    window.addEventListener("blur", onWindowBlur);
+
+    return () => {
+      onWindowBlur();
+
+      window.removeEventListener("focus", onWindowFocus);
+      window.removeEventListener("blur", onWindowBlur);
+    };
+  }, []);
 
   const isLoading = task === null;
 

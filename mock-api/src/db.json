@@ -1,22 +1,62 @@
 {
   "tasks": [
     {
-      "submitted": true,
-      "answer": "heyo",
+      "submitted": false,
       "id": 1,
       "instructions": "Write a greeting"
     },
     {
-      "submitted": true,
+      "submitted": false,
       "answer": "Dave",
       "id": 2,
-      "instructions": "Write a name"
+      "instructions": "Write a name",
+      "sessions": {
+        "0001": [
+          {
+            "begin": 1642461704768,
+            "end": 1642461707854
+          },
+          {
+            "begin": 1642461723692,
+            "end": 1642461725084
+          }
+        ]
+      }
     },
     {
       "submitted": false,
-      "answer": "ok test but now ok",
+      "answer": "ok test but now ok\nand haiku time ok",
       "id": 3,
       "instructions": "Write a poem"
+    },
+    {
+      "submitted": false,
+      "id": 4,
+      "instructions": "Write a story"
+    },
+    {
+      "submitted": false,
+      "id": 5,
+      "instructions": "Write a haiku",
+      "answer": "three cheese trees\nfreezy breeze",
+      "sessions": {
+        "0001": [
+          {
+            "begin": 1642461688020,
+            "end": 1642461689665
+          },
+          {
+            "begin": 1642461726601,
+            "end": 1642461728860
+          }
+        ]
+      }
+    },
+    {
+      "submitted": false,
+      "id": 6,
+      "instructions": "Write a sonnet",
+      "answer": "something something summer's day"
     }
   ]
 }
