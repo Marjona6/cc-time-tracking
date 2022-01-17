@@ -1,84 +1,109 @@
-import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useState, useCallback, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 
-const TaskSubmit = props => {
+import { API_URL } from "./constants";
+
+const TaskSubmit = (props) => {
   const { id: taskId } = useParams();
-  const [task, setTask] = React.useState(null);
-  const [errors, setErrors] = React.useState(null);
-  const [answer, setAnswer] = React.useState('');
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [task, setTask] = useState(null);
+  const [errors, setErrors] = useState(null);
+  const [answer, setAnswer] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     (async () => {
-      const response = await fetch(`http://localhost:5000/tasks/${taskId}`);
+      const response = await fetch(`${API_URL}/tasks/${taskId}`);
       const result = await response.json();
-      setTask(result.data);
+      setTask(result);
+      if (result.answer) setAnswer(result.answer);
     })();
   }, [taskId]);
 
-  const onChangeAnswer = React.useCallback(event =>
-    setAnswer(event.target.value)
-  , []);
+  const onChangeAnswer = useCallback((event) => setAnswer(event.target.value), []);
 
-  const onSubmitAnswer = React.useCallback(event => {
-    (async () => {
-      setIsSubmitting(true);
+  const onSubmitAnswer = useCallback(
+    (event) => {
+      (async () => {
+        setIsSubmitting(true);
 
-      const response = await fetch(`http://localhost:5000/tasks/${taskId}`, {
-        method: 'put',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ task: { submitted: true, answer } })
-      });
-      const result = await response.json();
+        const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+          method: "put",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...task, submitted: true, answer }),
+        });
+        const result = await response.json();
 
-      if (result.success) {
-        setTask(result.data);
-      } else {
-        setErrors(JSON.stringify(result.errors));
-      }
+        if (result) {
+          setTask(result);
+        } else {
+          setErrors(JSON.stringify(result)); // TODO
+        }
 
-      setIsSubmitting(false);
-    })();
-  }, [taskId, answer]);
+        setIsSubmitting(false);
+      })();
+    },
+    [taskId, answer, task]
+  );
+
+  const onSaveAnswer = useCallback(
+    (event) => {
+      (async () => {
+        setIsSaving(true);
+
+        const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+          method: "put",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...task, submitted: false, answer }),
+        });
+        const result = await response.json();
+
+        if (result) {
+          setTask(result);
+        } else {
+          setErrors(JSON.stringify(result)); // TODO
+        }
+
+        setIsSaving(false);
+      })();
+    },
+    [taskId, answer, task]
+  );
 
   const isLoading = task === null;
-  return isLoading
-    ? 'Loading…'
-    : (
-      <>
-        <div>
-          <Link to="/">Back</Link>
-        </div>
-        <div>
-          <h1>{task.instructions}</h1>
 
-          {
-            task.submitted
-              ? (
-                <>
-                  <h3>Your answer</h3>
-                  <hr />
-                  <p>{task.answer}</p>
-                </>
-              ) : (
-                <>
-                  <p>Submit your answer:</p>
-                  <textarea
-                    rows="20"
-                    style={{ display: 'block', width: '80%' }}
-                    onChange={onChangeAnswer}
-                    value={answer}
-                  />
-                  {errors ? <p>{errors}</p> : null}
-                  <button onClick={onSubmitAnswer} disabled={isSubmitting}>
-                    Submit
-                  </button>
-                </>
-            )
-          }
-        </div>
-      </>
-    )
+  return isLoading ? (
+    "Loading…"
+  ) : (
+    <>
+      <div>
+        <Link to="/">Back</Link>
+      </div>
+      <div>
+        <h1>{task.instructions}</h1>
+
+        {task.submitted ? (
+          <>
+            <h3>Your answer</h3>
+            <hr />
+            <p>{task.answer}</p>
+          </>
+        ) : (
+          <>
+            <p>Submit your answer:</p>
+            <textarea rows="20" style={{ display: "block", width: "80%" }} onChange={onChangeAnswer} value={answer} />
+            {errors ? <p>{errors}</p> : null}
+            <button onClick={onSubmitAnswer} disabled={isSubmitting}>
+              Submit
+            </button>
+            <button onClick={onSaveAnswer} disabled={isSubmitting || isSaving}>
+              Save without submitting
+            </button>
+          </>
+        )}
+      </div>
+    </>
+  );
 };
 
 export default TaskSubmit;
