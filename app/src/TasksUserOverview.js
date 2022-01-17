@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { API_URL } from "./constants";
 
-const TasksOverview = (props) => {
+const TasksUserOverview = (props) => {
   const [tasks, setTasks] = useState(null);
 
   useEffect(() => {
@@ -27,8 +27,9 @@ const TasksOverview = (props) => {
           </li>
         ))}
       </ul>
+      <Link to={"/dashboard"}>Manager Dashboard</Link>
     </>
   );
 };
 
-export default TasksOverview;
+export default TasksUserOverview;

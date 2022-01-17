@@ -3,7 +3,15 @@
     {
       "submitted": false,
       "id": 1,
-      "instructions": "Write a greeting"
+      "instructions": "Write a greeting",
+      "sessions": {
+        "0001": [
+          {
+            "begin": 1642462580771,
+            "end": 1642462582353
+          }
+        ]
+      }
     },
     {
       "submitted": false,
@@ -57,6 +65,11 @@
       "id": 6,
       "instructions": "Write a sonnet",
       "answer": "something something summer's day"
+    }
+  ],
+  "users": [
+    {
+      "id": "0001"
     }
   ]
 }
