@@ -81,6 +81,7 @@ Developer's Notes
 
 ### What Would I Have Done With More Time?
 
+- Unfortunately, I did not have time to add the individual user statistics page. I think this would not take much longer, but I wanted to keep to the time limit.
 - Given more time, I would flesh out the functionalities for multiple users, as I've already started to. Each task would have a "submitted" property of type object rather than type boolean, with a separate boolean property associated with each user. This would allow, for example, user 0001 to have submitted a task while user 0002 has not.
 - I would also implement a login/logout system so that multiple users could access the system and enter and save their responses separately. I would also require a login for a manager user who would be authorized to view all learners' data.
 - Error handling isn't really accomplished in this MVP, since I'm mocking a backend. Ideally, I would have had time to mock errors or to learn Ruby well enough to build a real back end. :)
