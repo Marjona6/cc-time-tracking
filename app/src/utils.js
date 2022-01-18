@@ -14,5 +14,5 @@ export const getAverageSessionLength = (sessionArray = []) => {
   let numberOfSessions = getNumberOfSessions(sessionArray);
   if (numberOfSessions < 1) return 0;
   let totalTime = getTotalTime(sessionArray);
-  return totalTime / numberOfSessions;
+  return (totalTime / numberOfSessions).toFixed(1);
 };
