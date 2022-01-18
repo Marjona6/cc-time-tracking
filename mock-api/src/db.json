@@ -13,13 +13,21 @@
           {
             "begin": 1642491656556,
             "end": 1642491662148
+          },
+          {
+            "begin": 1642492051736,
+            "end": 1642492054507
+          },
+          {
+            "begin": 1642492325855,
+            "end": 1642492515953
           }
         ]
       },
       "answer": "Howdy"
     },
     {
-      "submitted": false,
+      "submitted": true,
       "answer": "Dave",
       "id": 2,
       "instructions": "Write a name",
@@ -32,26 +40,55 @@
           {
             "begin": 1642461723692,
             "end": 1642461725084
+          },
+          {
+            "begin": 1642492056568,
+            "end": 1642492058697
+          },
+          {
+            "begin": 1642492060308,
+            "end": 1642492062685
           }
         ]
       }
     },
     {
       "submitted": false,
-      "answer": "ok test but now ok\nand haiku time ok",
+      "answer": "Twinkle, twinkle,\nLittle car",
       "id": 3,
-      "instructions": "Write a poem"
+      "instructions": "Write a poem",
+      "sessions": {
+        "0001": [
+          {
+            "begin": 1642493470343,
+            "end": 1642493485082
+          }
+        ]
+      }
     },
     {
-      "submitted": false,
+      "submitted": true,
       "id": 4,
-      "instructions": "Write a story"
+      "instructions": "Write a story",
+      "sessions": {
+        "0001": [
+          {
+            "begin": 1642492697817,
+            "end": 1642492706161
+          },
+          {
+            "begin": 1642492712410,
+            "end": 1642492717570
+          }
+        ]
+      },
+      "answer": "Once upon a time, the end."
     },
     {
       "submitted": false,
       "id": 5,
       "instructions": "Write a haiku",
-      "answer": "three cheese trees\nfreezy breeze",
+      "answer": "three cheese trees\nfreezy breeze\nsomething knees",
       "sessions": {
         "0001": [
           {
@@ -61,6 +98,50 @@
           {
             "begin": 1642461726601,
             "end": 1642461728860
+          },
+          {
+            "begin": 1642493001052,
+            "end": 1642493013609
+          },
+          {
+            "begin": 1642493015204,
+            "end": 1642493017099
+          },
+          {
+            "begin": 1642493029679,
+            "end": 1642493031134
+          },
+          {
+            "begin": 1642493106303,
+            "end": 1642493106309
+          },
+          {
+            "begin": 1642493110654,
+            "end": 1642493113080
+          },
+          {
+            "begin": 1642493131157,
+            "end": 1642493150881
+          },
+          {
+            "begin": 1642493157297,
+            "end": 1642493157304
+          },
+          {
+            "begin": 1642493161633,
+            "end": 1642493163395
+          },
+          {
+            "begin": 1642493191075,
+            "end": 1642493210941
+          },
+          {
+            "begin": 1642493394076,
+            "end": 1642493397753
+          },
+          {
+            "begin": 1642493603474,
+            "end": 1642493605918
           }
         ]
       }
@@ -75,6 +156,14 @@
           {
             "begin": 1642491578570,
             "end": 1642491588733
+          },
+          {
+            "begin": 1642493591544,
+            "end": 1642493594310
+          },
+          {
+            "begin": 1642493596918,
+            "end": 1642493598594
           }
         ]
       }

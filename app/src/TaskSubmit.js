@@ -23,53 +23,63 @@ const TaskSubmit = ({ userId = "0001", ...props }) => {
   const onBeginSession = useCallback(
     (event) => {
       (async () => {
-        const response1 = await fetch(`${API_URL}/tasks/${taskId}`);
-        const currentTask = await response1.json();
-        const updatedSessions = currentTask.sessions || {};
-        updatedSessions[userId] = updatedSessions[userId] || [];
-        updatedSessions[userId] = [...updatedSessions[userId], { begin: new Date().getTime() }];
+        let currentTask;
+        if (task === null) {
+          const response1 = await fetch(`${API_URL}/tasks/${taskId}`);
+          currentTask = await response1.json();
+        } else currentTask = task;
+        if (!currentTask.submitted) {
+          const updatedSessions = currentTask.sessions || {};
+          updatedSessions[userId] = updatedSessions[userId] || [];
+          updatedSessions[userId] = [...updatedSessions[userId], { begin: new Date().getTime() }];
 
-        const response = await fetch(`${API_URL}/tasks/${taskId}`, {
-          method: "put",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...currentTask, sessions: updatedSessions }),
-        });
-        const result = await response.json();
+          const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+            method: "put",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...currentTask, sessions: updatedSessions }),
+          });
+          const result = await response.json();
 
-        if (result) {
-          setTask(result);
-        } else {
-          setErrors(JSON.stringify(result)); // TODO
+          if (result) {
+            setTask(result);
+          } else {
+            setErrors(JSON.stringify(result)); // TODO
+          }
         }
       })();
     },
-    [taskId, userId]
+    [taskId, userId, task]
   );
 
   const onEndSession = useCallback(
     (event) => {
       (async () => {
-        const response1 = await fetch(`${API_URL}/tasks/${taskId}`);
-        const currentTask = await response1.json();
-        const updatedSessions = currentTask.sessions || {};
-        updatedSessions[userId] = updatedSessions[userId] || [];
-        updatedSessions[userId][updatedSessions[userId].length - 1] = { ...updatedSessions[userId][updatedSessions[userId].length - 1], end: new Date().getTime() };
+        let currentTask;
+        if (task === null) {
+          const response1 = await fetch(`${API_URL}/tasks/${taskId}`);
+          currentTask = await response1.json();
+        } else currentTask = task;
+        if (!currentTask.submitted) {
+          const updatedSessions = currentTask.sessions || {};
+          updatedSessions[userId] = updatedSessions[userId] || [];
+          updatedSessions[userId][updatedSessions[userId].length - 1] = { ...updatedSessions[userId][updatedSessions[userId].length - 1], end: new Date().getTime() };
 
-        const response = await fetch(`${API_URL}/tasks/${taskId}`, {
-          method: "put",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...currentTask, sessions: updatedSessions }),
-        });
-        const result = await response.json();
+          const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+            method: "put",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...currentTask, sessions: updatedSessions }),
+          });
+          const result = await response.json();
 
-        if (result) {
-          setTask(result);
-        } else {
-          setErrors(JSON.stringify(result)); // TODO
+          if (result) {
+            setTask(result);
+          } else {
+            setErrors(JSON.stringify(result)); // TODO
+          }
         }
       })();
     },
-    [taskId, userId]
+    [taskId, userId, task]
   );
 
   const onChangeAnswer = useCallback((event) => setAnswer(event.target.value), []);
@@ -79,10 +89,14 @@ const TaskSubmit = ({ userId = "0001", ...props }) => {
       (async () => {
         setIsSubmitting(true);
 
+        const updatedSessions = task.sessions || {};
+        updatedSessions[userId] = updatedSessions[userId] || [];
+        updatedSessions[userId][updatedSessions[userId].length - 1] = { ...updatedSessions[userId][updatedSessions[userId].length - 1], end: new Date().getTime() };
+
         const response = await fetch(`${API_URL}/tasks/${taskId}`, {
           method: "put",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...task, submitted: true, answer }),
+          body: JSON.stringify({ ...task, submitted: true, answer, sessions: updatedSessions }),
         });
         const result = await response.json();
 
@@ -95,7 +109,7 @@ const TaskSubmit = ({ userId = "0001", ...props }) => {
         setIsSubmitting(false);
       })();
     },
-    [taskId, answer, task]
+    [taskId, answer, task, userId]
   );
 
   const onSaveAnswer = useCallback(
@@ -106,7 +120,7 @@ const TaskSubmit = ({ userId = "0001", ...props }) => {
         const response = await fetch(`${API_URL}/tasks/${taskId}`, {
           method: "put",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...task, submitted: false, answer }), // TODO end current session
+          body: JSON.stringify({ ...task, submitted: false, answer }), // TODO end current session? if user is still focusing this window, I'll assume the user is still working on the task until either navigating away or clicking submit
         });
         const result = await response.json();
 
