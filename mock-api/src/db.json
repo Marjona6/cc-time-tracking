@@ -1,7 +1,7 @@
 {
   "tasks": [
     {
-      "submitted": false,
+      "submitted": true,
       "id": 1,
       "instructions": "Write a greeting",
       "sessions": {
@@ -9,9 +9,14 @@
           {
             "begin": 1642462580771,
             "end": 1642462582353
+          },
+          {
+            "begin": 1642491656556,
+            "end": 1642491662148
           }
         ]
-      }
+      },
+      "answer": "Howdy"
     },
     {
       "submitted": false,
@@ -64,7 +69,15 @@
       "submitted": false,
       "id": 6,
       "instructions": "Write a sonnet",
-      "answer": "something something summer's day"
+      "answer": "something something summer's day, shakespeare something something",
+      "sessions": {
+        "0001": [
+          {
+            "begin": 1642491578570,
+            "end": 1642491588733
+          }
+        ]
+      }
     }
   ],
   "users": [
